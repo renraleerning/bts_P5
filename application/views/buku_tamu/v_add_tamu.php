@@ -88,18 +88,19 @@
 				            	</div>
 					            <div class="form-group">
 					            	<label for="xtujuan">Bagian:</label>
-					            	<select class="form-control" id="xtujuan" name="xtujuan"  required>
+					            	<select class="form-control" name="xtujuan" id="xtujuan"  required>
+					            		<option value="Event Pernikahan" selected="">Event Pernikahan</option>
 					            	</select>
 					            </div>
-					            <div class="form-group">
-					            	<label for="xnamatujuan">Nama Pegawai Yang Dituju:</label>
-					            	<select class="form-control" id="xnamatujuan" name="xnamatujuan" required></select>
-					            </div>
+					            <!-- <div class="form-group"> -->
+					            	<!-- <label for="xnamatujuan">Nama Pegawai Yang Dituju:</label> -->
+					            	<input type="hidden" name="xnamatujuan" value="-">
+					            <!-- </div> -->
 					            
-					            <div class="form-group">
+					            <!-- <div class="form-group"> -->
 					            	<label for="xkeperluan">Keperluan Bertamu:</label>
-					            	<textarea class="form-control" id="xkeperluan" name="xkeperluan" rows="6" placeholder="Masukkan Tujuan bertamu" required></textarea>
-					            </div>
+					            	<textarea class="form-control" id="xkeperluan" name="xkeperluan" rows="6" placeholder="Masukkan Tujuan bertamu" required>Menghadiri Pernikahan</textarea>
+					            <!-- </div> -->
 				            </div>
 				            <!-- /.box-body -->
 				        </div>

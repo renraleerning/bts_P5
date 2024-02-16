@@ -3,7 +3,8 @@ class Data_buku_tamu extends CI_Controller{
 	function __construct(){
 		parent::__construct();
 		if($this->session->userdata('masuk') !=TRUE){
-            $url=base_url('admin');
+            // $url=base_url('admin');
+            $url=base_url('Login/auth');
             redirect($url);
         };
 		$this->load->model('m_tamu');
@@ -145,7 +146,11 @@ class Data_buku_tamu extends CI_Controller{
 		$data=$this->m_tamu->get_bagian();
         $hasil = '<option value="">::PilihBagian::</option> ';
         foreach ($data as $r) {
-            $hasil .= '<option value="'.$r->nama_bagian.'" >'.$r->nama_bagian.'</option>';
+            if ($r->nama_bagian=="Event Undangan Pernikahan") {
+            	$hasil .= '<option selected value="'.$r->nama_bagian.'" >'.$r->nama_bagian.'</option>';
+            }else{
+            	$hasil .= '<option value="'.$r->nama_bagian.'" >'.$r->nama_bagian.'</option>';
+            }
         }
         echo $hasil;
 	}

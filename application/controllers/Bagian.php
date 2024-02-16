@@ -3,7 +3,8 @@ class Bagian extends CI_Controller{
 	function __construct(){
 		parent::__construct();
 		if($this->session->userdata('masuk') !=TRUE){
-            $url=base_url('admin');
+            // $url=base_url('admin');
+            $url=base_url('Login/auth');
             redirect($url);
         };
         $this->load->model('m_bagian');
@@ -16,7 +17,7 @@ class Bagian extends CI_Controller{
 	        
 	        $limit=$this->uri->segment(3);
 	        
-	        $offset = 10;
+	        $offset = 100;
 	        
 	        if($limit != 0){
 	        	$limit = ($limit-1) * $offset;

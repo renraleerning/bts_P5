@@ -9,7 +9,7 @@ $method = $this->router->fetch_method();
     <!-- mini logo for sidebar mini 50x50 pixels -->
     <span class="logo-mini">BTS</span>
     <!-- logo for regular state and mobile devices -->
-    <span class="logo-lg">Buku Tamu Selfie</span>
+    <span class="logo-lg">BTS <span style="color: orange;">EVENT!</span> </span>
   </a>
 
   <!-- Header Navbar: style can be found in header.less -->

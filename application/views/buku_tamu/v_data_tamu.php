@@ -220,7 +220,9 @@ $this->load->view('include/v_footer');
 			tr += "<td>" + foto + "</td>";
 			tr += "<td>" + identitas + "</td>";
 			tr += "<td>" + keperluan + "</td>";
-			tr += "<td>" + tujuan + "<br>" + namatujuan + "</td>";
+			tr += "<td>" + tujuan + "<br>" + 
+			// namatujuan + 
+			"</td>";
 			tr += "<td><span class='visitorCard" + id + "'></span></td>";
 			tr += "<td><span class='lampiran" + id + "'></span></td>";
 			tr += "<td class='text-center' nowrap>";

@@ -50,6 +50,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |		my-controller/my-method	-> my_controller/my_method
 */
 $route['default_controller'] = 'data_buku_tamu';
-$route['admin']='login';
+$route['admin']='login/auth';
 $route['404_override'] = 'error_page';
 $route['translate_uri_dashes'] = FALSE;

@@ -95,10 +95,11 @@
 				            		<select class="form-control" id="xtujuan" name="xtujuan"  required>
 				            		</select>
 				            	</div>
-				            	<div class="form-group">
+				            	<!-- <div class="form-group">
 				            		<label for="xnamatujuan">Nama Pegawai Yang Dituju:</label>
 				            		<select class="form-control" id="xnamatujuan" name="xnamatujuan" required></select>
-				            	</div>
+				            	</div> -->
+				            	<input type="hidden" name="xnamatujuan" value="-">
 				            	<div class="form-group">
 				            		<label for="xkeperluan">Keperluan Bertamu:</label>
 				            		<textarea class="form-control" id="xkeperluan" name="xkeperluan"  placeholder="Mengajukan Kontra memori Banding" required><?php echo $tamu['keperluan'];?></textarea>
@@ -119,44 +120,35 @@
 							</div>
 						</div>
 						<div class="box box-success">
-				            <div class="box-header with-border">
-				            	<i class="fa fa-credit-card"></i>
-				            	<h3  class="box-title">Kartu Visitor</h3><br>
-				            	<small>Focuskan kursor pada input dan scan kartu nfc</small>
-				            </div>
-				            <div class="box-body">
-				            	<?php 
-				            	$result_kartu=$rfid->result();
-				            	$no_kartu = 0;
-				            	foreach ($result_kartu as $row) {
-				            	?>
-				            	<div id="xrfid<?php echo $no_kartu;?>">
-				            		<div class="form-group">
-				            			<label class="control-label" for="item_xrfid">ID Kartu Visitor:</label>
-				            			<input type="number" class="form-control" name="item_xrfid[]" value="<?php echo $row->serial_kartu ?>" placeholder="focuskan kursor pada input dan scan kartu nfc" required>
-				            		</div>
-				            	</div>
-				            	<?php 				            		
-				            	}
-				            	?>
-				            	<div id="xrfid<?php echo $no_kartu+1?>"></div>
-				                <div class="form-group">
-					             	<div class="col-xs-12">
-						             	<div class="text-right">
-							             	<a href="javascript:_remove_more_rfid(0);" class="btn btn-xs btn-danger">
-							             		<b><i class="fa fa-minus-square"></i> Hapus</b>
-							             	</a>
-							             	&nbsp;
-							             	&nbsp;
-						             		<a href="javascript:_add_more_rfid(0);" class="btn btn-primary btn-xs">
-						             			<b><i class="fa fa-plus-square"></i> Tambah</b>
-						             		</a>
-						             	</div>
-					             	</div>
-					             </div>
-				            </div><!-- /.box-body -->
-				        </div><!-- /.box -->
-
+						    	<div class="box-header with-border">
+						    		<i class="fa fa-credit-card"></i>
+						    		<h3  class="box-title">Kartu Visitor</h3><br>
+						    		<small>Focuskan kursor pada input dan scan kartu rfid</small>
+						    	</div>
+						    	<div class="box-body">
+						    		<div id="xrfid0">
+						    			<div class="form-group">
+						    				<label class="control-label" for="item_xrfid">ID Kartu Visitor:</label>
+						    				<input type="number" class="form-control" name="item_xrfid[]" placeholder="focuskan kursor pada input dan scan kartu nfc" >
+						    			</div>
+						    		</div>
+						    		<div id="xrfid1"></div>
+						    		<div class="form-group">
+						    			<div class="col-xs-12">
+						    				<div class="text-right">
+						    					<a href="javascript:_remove_more_rfid(0);" class="btn btn-xs btn-danger">
+						    						<b><i class="fa fa-minus-square"></i> Hapus</b>
+						    					</a>
+						    					&nbsp;
+						    					<a href="javascript:_add_more_rfid(0);" class="btn btn-primary btn-xs">
+						    						<b><i class="fa fa-plus-square"></i> Tambah</b>
+						    					</a>
+						    				</div>
+						    			</div>
+						    		</div>
+						    	</div>
+						    	<!-- /.box-body -->
+						</div> <!-- /.box -->
 				        <div class="box box-success">
 				        	<div class="box-header with-border">
 				        		<i class="fa fa-file"></i>
