@@ -6,8 +6,8 @@ class Laporan extends CI_Controller
   {
     parent::__construct();
     if ($this->session->userdata('masuk') != TRUE) {
-      // $url=base_url('admin');
-      $url=base_url('Login/auth');
+      $url=base_url('admin');
+      // $url=base_url('Login/auth');
     };
     $this->load->model('m_tamu');
     $this->load->library('upload');

@@ -3,8 +3,8 @@ class Jabatan extends CI_Controller{
 	function __construct(){
 		parent::__construct();
 		if($this->session->userdata('masuk') !=TRUE){
-            // $url=base_url('admin');
-            $url=site_url('Login/auth');
+            $url=base_url('admin');
+            // $url=site_url('Login/auth');
             redirect($url);
         };
         $this->load->model('m_jabatan');

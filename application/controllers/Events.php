@@ -1,20 +1,19 @@
 <?php
-class Data_buku_tamu extends CI_Controller{
+class Events extends CI_Controller{
 	function __construct(){
 		parent::__construct();
-		if($this->session->userdata('masuk') !=TRUE){
-            $url=base_url('admin');
-            // $url=base_url('Login/auth');
-            redirect($url);
-        };
+		// if($this->session->userdata('masuk') !=TRUE){
+  //           $url=base_url('admin');
+  //           // $url=base_url('Login/auth');
+  //           redirect($url);
+  //       };
 		$this->load->model('m_tamu');
 		$this->load->library('upload');
 		$this->load->helper('url');
 		$this->load->library('pagination');
 	}
 	function index(){
-		$this->load->view('include/v_head');
-		$this->load->view('buku_tamu/v_data_tamu');		
+		$this->load->view('other/v_add_tamu');
 	}
 	function loadRecord($limit=0){
 		$offset = 10;
@@ -235,19 +234,218 @@ class Data_buku_tamu extends CI_Controller{
 						else{
 							//sukses DENGAN foto dan lampiran
 							echo $this->session->set_flashdata('msg','success 2');
-							redirect('data_buku_tamu');
+							redirect('events');
 						}
 					}
 				}
 				
 			}
 			echo $this->session->set_flashdata('msg','success-simpan');
-			redirect('data_buku_tamu');
+			redirect('events');
 			 
 		}
 		else{
 			echo $this->session->set_flashdata('msg','danger');
+			redirect('events');
+		}
+	}
+	function get_edit_tamu(){
+		$id=$this->uri->segment(3);
+		$x['data_tamu']=$this->m_tamu->get_data_tamu_by_kode($id);
+		$x['rfid']=$this->m_tamu->get_kartu_visitor($id);
+		$x['lampiran']=$this->m_tamu->get_file_lampiran($id);
+		$this->load->view('include/v_head',$x);
+		$this->load->view('buku_tamu/v_edit_tamu',$x);
+	}
+	function update_tamu(){
+		$id_tamu 		=strip_tags(addslashes($this->input->post('xkode')));
+		$nama 			=strip_tags(addslashes($this->input->post('xnama')));
+		$alamat 		=strip_tags(addslashes($this->input->post('xalamat')));
+		$jenkel 		=strip_tags($this->input->post('xjenkel'));
+		$no_hp 			=strip_tags(str_replace(" ", "", $this->input->post('xnohp')));
+		$tujuan 		=strip_tags($this->input->post('xtujuan'));
+		$keperluan 		=strip_tags(addslashes($this->input->post('xkeperluan')));
+		$nama_tujuan 		=strip_tags(addslashes($this->input->post('xnamatujuan')));
+		$image 			=addslashes($_POST['xnama_file_foto']);
+		
+		if(!empty($image)) {
+			$nama_tamu = strtolower(preg_replace( array('/[^a-z0-9\- ]/i', '/[ \-]+/'), array('', '-'), $nama));
+ 			$foto = 'foto_'.$nama_tamu.'_tamu_'.date("Y-m-d").'.jpeg';
+		}else {
+			$foto ="";
+		}
+		
+		$user_id=$this->session->userdata('idadmin');
+		$user_nama=$this->session->userdata('nama');
+
+		//Update data tamu text
+		$update_data_tamu = $this->m_tamu->update_tamu($id_tamu,$nama,$alamat,$jenkel,$no_hp,$tujuan,$keperluan,$nama_tujuan,$foto,$user_id,$user_nama);
+		if($update_data_tamu){
+			//cek apa kartu rfid disertakan
+			$item_rfid = $_POST['item_xrfid'];
+			$rowItem_xrfid = count($item_rfid);
+			$id=$id_tamu;
+			if($rowItem_xrfid > 0){
+				$hapus_kartu_rfid = $this->m_tamu->hapus_all_kartu_rfid($id);
+
+				$no_array = 0;
+				foreach($item_rfid as $r){
+					if($_POST['item_xrfid'][$no_array] !=""){
+						$serial_kartu = $_POST['item_xrfid'][$no_array];
+						$insert_kartu_rfid	= $this->m_tamu->insert_kartu_rfid($id,$serial_kartu);
+						$no_array++;	
+					}
+				}
+			}
+			else{
+				$hapus_kartu_rfid = $this->m_tamu->hapus_all_kartu_rfid($id);
+
+			}
+			if(!empty($foto)){
+				
+				if(file_exists('./assets/images/foto_tamu/'.$foto)){
+					unlink('./assets/images/foto_tamu/'.$foto);
+				}
+				$data_foto = $image;
+				list($type, $data_foto) = explode(';', $data_foto);
+				list(, $data_foto)      = explode(',', $data_foto);
+				$data_foto = base64_decode($data_foto);
+				$put_image = file_put_contents('./assets/images/foto_tamu/'.$foto, $data_foto);
+			}
+			
+			
+			$item_lampiran_count = count($_FILES["item_xnamalampiran"]['name']);
+			$no_array_lamp = 0;
+			if(count($_FILES["item_xnamalampiran"]['name']) > 0) {
+				for($j=0; $j < count($_FILES["item_xnamalampiran"]['name']); $j++){
+					$filen = $_FILES["item_xnamalampiran"]['name'][$j];	
+					$pathfolder = "./assets/file_lampiran/";
+					if ($filen != "") {
+						$path = "./assets/file_lampiran/".$filen;
+						if(move_uploaded_file($_FILES["item_xnamalampiran"]['tmp_name']["$j"], $path)) { 
+							$insert =  $this->m_tamu->insert_lampiran($id,$filen);
+						}
+					}
+				}
+			}
+			echo $this->session->set_flashdata('msg','success-update');
 			redirect('data_buku_tamu');
 		}
+		else{
+			echo $this->session->set_flashdata('msg','gagal-update');
+			redirect('data_buku_tamu');
+		}
+	}
+	function hapus_lampiran(){
+		$id 			= $this->input->post('id');
+		$lampiran 		= $this->m_tamu->get_file_lampiran_by_id($id);
+		$lamp 			= $lampiran->row_array();
+		$id_lampiran 	= $lamp['id'];
+		$file 			= $lamp['file'];
+		if(file_exists('./assets/file_lampiran/'.$file)){
+			$path 		='./assets/file_lampiran/'.$file;
+			unlink($path);
+			$hapus 		= $this->m_tamu->hapus_file_lampiran($id_lampiran);
+			if($hapus) {
+				$callback = array(
+					'pesan'=>'success',
+					'csrfName'=>$this->security->get_csrf_token_name(),
+					'csrfHash'=>$this->security->get_csrf_hash()
+				);
+			}else{
+				$callback = array(
+					'pesan'=>'gagal',
+					'csrfName'=>$this->security->get_csrf_token_name(),
+					'csrfHash'=>$this->security->get_csrf_hash()
+				);
+			}
+			echo json_encode($callback);
+		}else {
+			$hapus 		= $this->m_tamu->hapus_file_lampiran($id_lampiran);
+			if($hapus) {
+				$callback = array(
+					'pesan'=>'success',
+					'csrfName'=>$this->security->get_csrf_token_name(),
+					'csrfHash'=>$this->security->get_csrf_hash()
+				);
+			}else{
+				$callback = array(
+					'pesan'=>'gagal',
+					'csrfName'=>$this->security->get_csrf_token_name(),
+					'csrfHash'=>$this->security->get_csrf_hash()
+				);
+			}
+			echo json_encode($callback);
+		}
+	}
+	function hapus_tamu(){
+		$id=$this->input->post('id');
+		$foto=$this->input->post('foto');
+		if($foto !=="") {
+			if(file_exists('./assets/images/foto_tamu/'.$foto)){
+				unlink('./assets/images/foto_tamu/'.$foto);
+			}
+		}
+
+		$this->m_tamu->hapus_tamu($id);
+
+
+		$kartu = $this->m_tamu->get_kartu_visitor($id);
+		$card = $kartu->result();
+		foreach ($card as $row) {
+			$id_kartu = $row->id;
+			$serial_kartu = $row->serial_kartu;
+			$this->m_tamu->hapus_kartu_rfid($id_kartu);
+		}
+
+		$lampiran = $this->m_tamu->get_file_lampiran($id);
+		$lamp = $lampiran->result();
+		foreach($lamp as $row) {
+			$id_lampiran = $row->id;
+			$file = $row->file;
+			if(file_exists('./assets/file_lampiran/'.$file)){
+					unlink('./assets/file_lampiran/'.$file);
+			}
+			$this->m_tamu->hapus_file_lampiran($id_lampiran);
+		}
+		$hapus = $this->m_tamu->hapus_tamu($id);
+		if($hapus){
+			echo json_encode("success");
+		}else{
+			echo json_encode("gagal");
+		}
+	}
+	function hapus_foto(){
+		$id=$this->input->post('id');
+		$foto=$this->input->post('foto');
+
+		if(file_exists('./assets/images/foto_tamu/'.$foto)){
+			$path='./assets/images/foto_tamu/'.$foto;
+			unlink($path);
+			$update = $this->m_tamu->update_foto_tamu($id);
+			if($update) {
+				$callback = array(
+					'pesan'=>'success'
+				);
+			}else{
+				$callback = array(
+					'pesan'=>'gagal'
+				);
+			}
+			echo json_encode($callback);
+		}
+		else{
+			$update = $this->m_tamu->update_foto_tamu($id);
+			if($update) {
+				$callback = array(
+					'pesan'=>'success'
+				);
+			}else{
+				$callback = array(
+					'pesan'=>'gagal'
+				);
+			}
+			echo json_encode($callback);
+		}		
 	}
 }

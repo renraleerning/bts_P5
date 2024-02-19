@@ -1,6 +1,6 @@
 <?php
-	$this->load->view('include/v_header');
-	$this->load->view('include/v_sidebar');
+    $this->load->view('include/v_header');
+    $this->load->view('include/v_sidebar');
 ?>
 
 <!-- Content Wrapper. Contains page content -->
@@ -20,60 +20,60 @@
 
     <!-- Main content -->
     <section class="content">
-    	<div class="row">
-    		<div class="col-xs-12">
-    			<div class="box">
-    				<div class="box-header with-border">
-    					<a class="btn btn-success btn-flat" data-toggle="modal" data-target="#myModal"><span class="fa fa-user-plus"></span> Add Bagian/Depart</a>
-    				</div>
-    				<!-- /.box-header -->
-    				<div class="box-body">
-    					<table  class="table table-bordered table-striped" >
-    						<thead>
-    							<tr>
-    								<th>No</th>
-    								<th>Nama Bagian / Depart.</th>
-    								<th>status</th>
-    								<th style="text-align:center;">Aksi</th>
-    							</tr>
-    						</thead>
-    						<tbody>
-								<?php
-									$no = $row;
-									foreach ($data as $i) :
-				                       $id 			= $i['id'];
-				                       $nama_bagian	= $i['nama_bagian'];
-				                       $status 		= $i['status'];
-				                       $no++;
-				                    ?>
-				                    <tr>
-				                        <td><?php echo $no;?>.</td>
-				                        <td><?php echo $nama_bagian;?></td>
-				                        <?php if($status=='1'):?>
-				                            <td>Aktif</td>
-				                        <?php else:?>
-				                            <td>Non Aktif</td>
-				                        <?php endif;?>
-				                        <td style="text-align:center;">
-				                            <a class="btn btn-info" data-toggle="modal" data-target="#ModalEdit<?php echo $id;?>" ><span class="fa fa-pencil"></span></a> &nbsp;
-				                            <a class="btn btn-warning" data-toggle="modal" data-target="#ModalHapus<?php echo $id;?>"><span class="fa fa-trash"></span></a>
-				                        </td>
-				                    </tr>
-								<?php 
-									endforeach;
-								?>
-							</tbody>
-						</table>
-					</div>
-					<!-- /.box-body -->
-				</div>
-				<!-- /.box -->
-			</div>
-			<!-- /.col -->
-		</div>
-		<!-- /.row -->
-	</section>
-	<!-- /.content -->
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header with-border">
+                        <a class="btn btn-success btn-flat" data-toggle="modal" data-target="#myModal"><span class="fa fa-user-plus"></span> Add Bagian/Depart</a>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <table  class="table table-bordered table-striped" >
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Nama Bagian / Depart.</th>
+                                    <th>status</th>
+                                    <th style="text-align:center;">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                    $no = $row;
+                                    foreach ($data as $i) :
+                                       $id          = $i['id'];
+                                       $nama_bagian = $i['nama_bagian'];
+                                       $status      = $i['status'];
+                                       $no++;
+                                    ?>
+                                    <tr>
+                                        <td><?php echo $no;?>.</td>
+                                        <td><?php echo $nama_bagian;?></td>
+                                        <?php if($status=='1'):?>
+                                            <td>Aktif</td>
+                                        <?php else:?>
+                                            <td>Non Aktif</td>
+                                        <?php endif;?>
+                                        <td style="text-align:center;">
+                                            <a class="btn btn-info" data-toggle="modal" data-target="#ModalEdit<?php echo $id;?>" ><span class="fa fa-pencil"></span></a> &nbsp;
+                                            <a class="btn btn-warning" data-toggle="modal" data-target="#ModalHapus<?php echo $id;?>"><span class="fa fa-trash"></span></a>
+                                        </td>
+                                    </tr>
+                                <?php 
+                                    endforeach;
+                                ?>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </section>
+    <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
 
@@ -93,12 +93,12 @@
                     <h4 class="modal-title" id="myModalLabel">Add</h4>
                 </div>
                 <div class="modal-body">
-                	<div class="form-group">
-                		<label for="inputUserName" class="col-sm-3 control-label">Nama Bagian</label>
-                		<div class="col-sm-9">
-                			<input type="text" name="nama_bagian" class="form-control" id="nama_bagian" placeholder="Nama Departmnt" required/>
-                		</div>
-                	</div>
+                    <div class="form-group">
+                        <label for="inputUserName" class="col-sm-3 control-label">Nama Bagian</label>
+                        <div class="col-sm-9">
+                            <input type="text" name="nama_bagian" class="form-control" id="nama_bagian" placeholder="Nama Departmnt" required/>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
@@ -111,11 +111,11 @@
 
 <?php 
 foreach ($data as $i) :
-	$id=$i['id'];
-	$nama_bagian=$i['nama_bagian'];
-	$status=$i['status'];
+    $id=$i['id'];
+    $nama_bagian=$i['nama_bagian'];
+    $status=$i['status'];
 ?>
-	<!--Modal Edit user-->
+    <!--Modal Edit user-->
     <div class="modal fade" id="ModalEdit<?php echo $id;?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
             <form class="form-horizontal" action="<?php echo base_url().'bagian/update_bagian'?>" method="post" enctype="multipart/form-data">
@@ -128,7 +128,7 @@ foreach ($data as $i) :
                     <div class="form-group">
                         <label for="inputUserName" class="col-sm-4 control-label">Nama Bagian</label>
                         <div class="col-sm-7">
-                    		<input type="hidden" name="id_bagian" value="<?php echo $id;?>"/>
+                            <input type="hidden" name="id_bagian" value="<?php echo $id;?>"/>
                             <input type="text" name="nama_bagian" class="form-control" id="nama_bagian" value="<?php echo $nama_bagian;?>" placeholder="Nama Lengkap" required>
                         </div>
                     </div>
@@ -136,13 +136,13 @@ foreach ($data as $i) :
                         <label for="status" class="col-sm-4 control-label">Status</label>
                         <div class="col-sm-7">
                             <select class="form-control" name="status" required>
-                    		<?php if($status=='1'):?>
+                            <?php if($status=='1'):?>
                                 <option value="1" selected>Aktif</option>
                                 <option value="0">Non Aktif</option>
-                    		<?php else:?>
-                    			<option value="1" >Aktif</option>
+                            <?php else:?>
+                                <option value="1" >Aktif</option>
                                 <option value="0" selected>Non Aktif</option>
-                    		<?php endif;?>
+                            <?php endif;?>
                             </select>
                         </div>
                     </div>
@@ -159,20 +159,20 @@ foreach ($data as $i) :
 
 <?php 
 foreach ($data as $i) :
-	$id=$i['id'];
-	$nama_bagian=$i['nama_bagian'];
+    $id=$i['id'];
+    $nama_bagian=$i['nama_bagian'];
 ?>
-	<!--Modal Hapus Bagian-->
+    <!--Modal Hapus Bagian-->
     <div class="modal fade" id="ModalHapus<?php echo $id;?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
-        	 <form class="form-horizontal" action="<?php echo base_url().'bagian/hapus_bagian'?>" method="post" enctype="multipart/form-data">
+             <form class="form-horizontal" action="<?php echo base_url().'bagian/hapus_bagian'?>" method="post" enctype="multipart/form-data">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><span class="fa fa-close"></span></span></button>
                     <h4 class="modal-title" id="myModalLabel">Hapus Bagian</h4>
                 </div>
                 <div class="modal-body">
-        				<input type="hidden" name="id_bagian" value="<?php echo $id;?>"/>
+                        <input type="hidden" name="id_bagian" value="<?php echo $id;?>"/>
                         <p>Apakah Anda yakin mau menghapus <b><?php echo $nama_bagian;?></b> ?</p>
                 </div>
                 <div class="modal-footer">
@@ -180,7 +180,7 @@ foreach ($data as $i) :
                     <button type="submit" class="btn btn-primary btn-flat" id="simpan">Hapus</button>
                 </div>
             </div>
-       		 </form>
+             </form>
         </div>
     </div>
 <?php endforeach;?>
